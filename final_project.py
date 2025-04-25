@@ -25,8 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Save to CSV if needed
-X_train.to_csv("X_train.csv", index=False)
-X_test.to_csv("X_test.csv", index=False)
-y_train.to_csv("y_train.csv", index=False)
-y_test.to_csv("y_test.csv", index=False)
+X_train.to_csv("ecommerceX_train.csv", index=False)
+X_test.to_csv("ecommerceX_test.csv", index=False)
+y_train.to_csv("ecommerceY_train.csv", index=False)
+y_test.to_csv("ecommerceY_test.csv", index=False)
