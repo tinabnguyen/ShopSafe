@@ -42,7 +42,7 @@ def train_perceptron(X_train, y_train):
     perceptron.fit(X_train, y_train)
     y_pred = perceptron.predict(X_train)
     sklearn_cm = confusion_matrix(y_train, y_pred)
-    print("Confusion Matrix:\n", sklearn_cm)
+    print("Confusion Matrix for perceptron:\n", sklearn_cm)
 
 
 train_perceptron(X_train, y_train)
