@@ -10,6 +10,7 @@ import argparse
 import pandas as pd
 import numpy as np
 
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.feature_selection import mutual_info_classif
 from scipy.sparse import hstack, csr_matrix
@@ -72,7 +73,7 @@ def compute_mutual_info(X: csr_matrix,
 
 def main():
     p = argparse.ArgumentParser(description="Data processing + MI scoring")
-    p.add_argument('input_csv', nargs='?', default='Fraudulent_E-Commerce_Transaction_Data_2.csv',
+    p.add_argument('input_csv', nargs='?', default='data/Fraudulent_E-Commerce_Transaction_Data_2.csv',
                    help="Path to input CSV file")
     p.add_argument('--target', default='Is Fraudulent',
                    help="Name of the target column (default: Is Fraudulent)")
@@ -124,10 +125,10 @@ def main():
     df_reduced = df_proc[keep_feats].copy()
     df_reduced['Is Fraudulent'] = y
 
-    df_reduced.to_csv('reduced_fraud_data.csv', index=False)
+    df_reduced.to_csv('data/reduced_fraud_data.csv', index=False)
 
     # 1) load your reduced data
-    df = pd.read_csv('reduced_fraud_data.csv')
+    df = pd.read_csv('data/reduced_fraud_data.csv')
 
     # 2) split positives and negatives
     df_pos = df[df['Is Fraudulent'] == 1]
@@ -147,7 +148,23 @@ def main():
     )
 
     # 6) save
-    df_balanced.to_csv('balanced_1to3_fraud_data.csv', index=False)
+    df_balanced.to_csv('data/balanced_1to3_fraud_data.csv', index=False)
+
+    df = pd.read_csv("data/balanced_1to3_fraud_data.csv")
+
+    # Split features and labels
+    X = df.drop(columns=['Is Fraudulent'])
+    y = df['Is Fraudulent']
+
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+    X_train.to_csv("data/ecommerceX_train.csv", index=False)
+    X_test.to_csv("data/ecommerceX_test.csv", index=False)
+    y_train.to_csv("data/ecommerceY_train.csv", index=False)
+    y_test.to_csv("data/ecommerceY_test.csv", index=False)
 
 
 if __name__ == '__main__':
