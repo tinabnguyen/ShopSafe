@@ -10,7 +10,6 @@ import argparse
 import pandas as pd
 import numpy as np
 
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.feature_selection import mutual_info_classif
 from scipy.sparse import hstack, csr_matrix
@@ -142,24 +141,6 @@ def main():
     )
 
     df_balanced.to_csv('data/balanced_1to3_fraud_data.csv', index=False)
-
-    """
-    Splitting the dataset into train and test sets ------------------------------------------------------
-    """
-    df = pd.read_csv("data/balanced_1to3_fraud_data.csv")
-
-    # Split features and labels
-    X = df.drop(columns=['Is Fraudulent'])
-    y = df['Is Fraudulent']
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
-
-    X_train.to_csv("data/ecommerceX_train.csv", index=False)
-    X_test.to_csv("data/ecommerceX_test.csv", index=False)
-    y_train.to_csv("data/ecommerceY_train.csv", index=False)
-    y_test.to_csv("data/ecommerceY_test.csv", index=False)
 
 
 if __name__ == '__main__':
