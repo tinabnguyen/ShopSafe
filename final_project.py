@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn import tree
 from sklearn.neighbors import KNeighborsClassifier as knn
 import matplotlib.pyplot as plt
+from sklearn.ensemble import AdaBoostClassifier
 
 
 def plot_roc_curve(fpr, tpr, model_name):
@@ -172,6 +173,8 @@ def main():
 
     train_knn(X_train, y_train, X_test, y_test)
     train_knn_tuned(X_train, y_train, X_test, y_test)
+
+    train_adaboost(X_train, y_train, X_test, y_test)
 
 
 if __name__ == '__main__':
