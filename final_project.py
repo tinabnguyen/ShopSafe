@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
+from sklearn import tree
 
 
 def train_logistic_regression(X_train, y_train):
@@ -13,6 +14,16 @@ def train_logistic_regression(X_train, y_train):
     y_pred = model.predict(X_train)
     sklearn_cm = confusion_matrix(y_train, y_pred)
     print("Confusion Matrix:\n", sklearn_cm)
+
+def train_decision_tree(X_train, y_train):
+    """
+    Train a decision tree.
+    """
+    clf = tree.DecisionTreeClassifier()
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_train)
+    sklearn_cm = confusion_matrix(y_train, y_pred)
+    print("Confusion Matrix for Decision Trees:\n", sklearn_cm)
 
 
 def main():
@@ -40,6 +51,10 @@ def main():
 
     train_logistic_regression(X_train, y_train)
 
+    """
+    Training using Decision Tree--------------------------------------------------------------
+    """
+    train_decision_tree(X_train, y_train)
 
 if __name__ == '__main__':
     main()
