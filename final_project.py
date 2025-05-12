@@ -95,6 +95,28 @@ def train_decision_tree(X_train, y_train, X_test, y_test):
     model.fit(X_train, y_train)
     evaluate_model(model, X_test, y_test, "Decision Tree")
 
+def train_tuned_decision_tree(X_train, y_train, X_test, y_test):
+    # Tuned Decision Tree
+    param_grid = {
+        'max_depth': [10, 20, 30, None],
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 5]
+    }
+    grid = GridSearchCV(
+        tree.DecisionTreeClassifier(),
+        param_grid,
+        cv = 5,
+        scoring = 'accuracy',
+        n_jobs = -1,
+        verbose = 1,
+        refit = True
+    )
+    grid.fit(X_train, y_train)
+    print("Best parameters found:", grid.best_params_)
+
+    best_DT = grid.best_estimator_
+    evaluate_model(best_DT, X_test, y_test, "Tuned DT")
+
 
 def train_knn(X_train, y_train, X_test, y_test):
     # K-Nearest Neighbors
@@ -140,6 +162,7 @@ def main():
     train_tuned_logistic(X_train, y_train, X_test, y_test)
 
     train_decision_tree(X_train, y_train, X_test, y_test)
+    train_tuned_decision_tree(X_train, y_train, X_test, y_test)
 
     train_knn(X_train, y_train, X_test, y_test)
     train_knn_tuned(X_train, y_train, X_test, y_test)
