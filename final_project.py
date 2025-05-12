@@ -148,6 +148,12 @@ def train_knn_tuned(X_train, y_train, X_test, y_test):
     evaluate_model(best_knn, X_test, y_test, "Tuned KNN")
 
 
+def train_adaboost(X_train, y_train, X_test, y_test):
+    model = AdaBoostClassifier()
+    model.fit(X_train, y_train)
+    evaluate_model(model, X_test, y_test, "Adaboost")
+
+
 def main():
     # Load and split data
     df = pd.read_csv("data/balanced_1to1_fraud_data.csv")
