@@ -34,7 +34,7 @@ def train_k_nearest_neighbors(X_train, y_train, X_test, y_test):
     K = []
     train = []
     test = []
-    scores = {}
+ 
     for k in range(2, 25):
         model = knn(n_neighbors = k)
         model.fit(X_train, y_train)
@@ -45,7 +45,7 @@ def train_k_nearest_neighbors(X_train, y_train, X_test, y_test):
 
         train.append(train_score)
         test.append(test_score)
-        scores[k] = [train_score, test_score]
+       
 
     plt.figure(figsize=(8, 4))
     plt.plot(K, train, marker='o', label='Training Accuracy', color='lightsteelblue')
