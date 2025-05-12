@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Robust data_processing.py
 - Auto-detects categorical and numeric columns
@@ -123,14 +122,14 @@ def main():
     df_reduced.to_csv('data/reduced_fraud_data.csv', index=False)
 
     """
-    balancing the dataset to a 1:3 ratio -----------------------------------------------------------------
+    balancing the dataset to a 1:1 ratio -----------------------------------------------------------------
     """
     df = pd.read_csv('data/reduced_fraud_data.csv')
 
     df_pos = df[df['Is Fraudulent'] == 1]
     df_neg = df[df['Is Fraudulent'] == 0]
 
-    n_keep_neg = len(df_pos) * 3
+    n_keep_neg = len(df_pos) * 1
 
     df_neg_under = df_neg.sample(n=n_keep_neg, random_state=42)
 
@@ -140,7 +139,7 @@ def main():
         .reset_index(drop=True)
     )
 
-    df_balanced.to_csv('data/balanced_1to3_fraud_data.csv', index=False)
+    df_balanced.to_csv('data/balanced_1to1_fraud_data.csv', index=False)
 
 
 if __name__ == '__main__':
