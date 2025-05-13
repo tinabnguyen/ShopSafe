@@ -184,6 +184,7 @@ def train_tuned_neural_network(X_train, y_train, X_test, y_test):
     print("Best parameters found:", grid.best_params_)
 
     best_nn = grid.best_estimator_
+    
     evaluate_model(best_nn, X_test, y_test, "Tuned Neural Network")
 
 
@@ -236,7 +237,7 @@ def main():
 
     train_neural_network(X_train, y_train, X_test, y_test)
     train_tuned_neural_network(X_train, y_train, X_test, y_test)
-    
+
     train_adaboost(X_train, y_train, X_test, y_test)
     train_tuned_adaboost(X_train, y_train, X_test, y_test)
 
