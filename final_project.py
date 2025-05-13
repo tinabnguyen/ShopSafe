@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn import tree
 from sklearn.neighbors import KNeighborsClassifier as knn
 import matplotlib.pyplot as plt
+from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import AdaBoostClassifier
 
 
@@ -137,7 +138,7 @@ def train_knn_tuned(X_train, y_train, X_test, y_test):
         knn(),
         param_grid,
         cv=5,
-        scoring='roc_auc',
+        scoring='accuracy',
         n_jobs=-1,
         verbose=1,
         refit=True
@@ -148,6 +149,42 @@ def train_knn_tuned(X_train, y_train, X_test, y_test):
     # Evaluate tuned model
     best_knn = grid.best_estimator_
     evaluate_model(best_knn, X_test, y_test, "Tuned KNN")
+
+def train_neural_network(X_train, y_train, X_test, y_test):
+    # Neural Network
+    model = MLPClassifier()
+    model.fit(X_train, y_train)
+    evaluate_model(model, X_test, y_test, "Neural Network")
+
+def train_tuned_neural_network(X_train, y_train, X_test, y_test):
+    # Tuned Neural Network
+    param_grid = {
+        'hidden_layer_sizes': [(50,), (100,), (50, 50)],
+        'activation': ['relu', 'tanh'],
+        'alpha': [1e-4, 1e-3, 1e-2],
+        'learning_rate': ['constant', 'adaptive']
+    }
+    grid = GridSearchCV(
+        MLPClassifier(
+            max_iter=1000,
+            solver='adam',
+            early_stopping=True,
+            validation_fraction=0.1,
+            n_iter_no_change=10,
+            random_state=42
+        ),
+        param_grid,
+        cv=5,
+        scoring='accuracy',
+        n_jobs=-1,
+        verbose=1,
+        refit=True
+    )
+    grid.fit(X_train, y_train)
+    print("Best parameters found:", grid.best_params_)
+
+    best_nn = grid.best_estimator_
+    evaluate_model(best_nn, X_test, y_test, "Tuned Neural Network")
 
 
 def train_adaboost(X_train, y_train, X_test, y_test):
@@ -172,7 +209,7 @@ def train_tuned_adaboost(X_train, y_train, X_test, y_test):
     )
 
     grid.fit(X_train, y_train)
-    print("\nBest paramters found:", grid.best_params_)
+    print("\nBest parameters found:", grid.best_params_)
     best_ada = grid.best_estimator_
     evaluate_model(best_ada, X_test, y_test, "Tuned Adaboost")
 
@@ -191,12 +228,15 @@ def main():
     train_logistic_regression(X_train, y_train, X_test, y_test)
     train_tuned_logistic(X_train, y_train, X_test, y_test)
 
-    train_decision_tree(X_train, y_train, X_test, y_test)
-    train_tuned_decision_tree(X_train, y_train, X_test, y_test)
-
     train_knn(X_train, y_train, X_test, y_test)
     train_knn_tuned(X_train, y_train, X_test, y_test)
 
+    train_decision_tree(X_train, y_train, X_test, y_test)
+    train_tuned_decision_tree(X_train, y_train, X_test, y_test)
+
+    train_neural_network(X_train, y_train, X_test, y_test)
+    train_tuned_neural_network(X_train, y_train, X_test, y_test)
+    
     train_adaboost(X_train, y_train, X_test, y_test)
     train_tuned_adaboost(X_train, y_train, X_test, y_test)
 
