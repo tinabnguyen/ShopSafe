@@ -1,10 +1,6 @@
-"""
-Robust data_processing.py
-- Auto-detects categorical and numeric columns
-- Drops ID and free-text address columns automatically
-- Splits encoding into OHE and scaling
-- Uses feature_selection.mutual_info_classif (no clustering warnings)
-"""
+# Tina Nguyen nbn210002
+# Catherine Le cnl210004
+
 import argparse
 import pandas as pd
 import numpy as np
@@ -15,12 +11,12 @@ from scipy.sparse import hstack, csr_matrix
 
 
 def load_data(path: str) -> pd.DataFrame:
-    """Load CSV into DataFrame"""
+    # Load CSV into DataFrame
     return pd.read_csv(path)
 
 
 def preprocess(df: pd.DataFrame) -> pd.DataFrame:
-    """Parse dates into components"""
+    # Parse dates into components
     if 'Transaction Date' in df.columns:
         df['Transaction Date'] = pd.to_datetime(
             df['Transaction Date'], errors='coerce')
@@ -33,9 +29,9 @@ def preprocess(df: pd.DataFrame) -> pd.DataFrame:
 def encode_features(df: pd.DataFrame,
                     cat_cols: list[str],
                     num_cols: list[str]) -> tuple[csr_matrix, np.ndarray]:
-    """
-    One hot encode categorical columns and scale numeric columns.
-    """
+    
+    # One hot encode categorical columns and scale numeric columns.
+    
     # One-hot encode categoricals
     ohe = OneHotEncoder(handle_unknown='ignore', sparse_output=True)
     X_cat = ohe.fit_transform(df[cat_cols])
@@ -55,10 +51,10 @@ def encode_features(df: pd.DataFrame,
 
 def compute_mutual_info(X: csr_matrix,
                         y: np.ndarray) -> np.ndarray:
-    """
-    Compute mutual information between each column of X and target y
-    using feature_selection.mutual_info_classif.
-    """
+    
+    # Compute mutual information between each column of X and target y
+    # using feature_selection.mutual_info_classif.
+    
     return mutual_info_classif(
         X,
         y,
@@ -68,9 +64,9 @@ def compute_mutual_info(X: csr_matrix,
 
 
 def main():
-    """
-    load, preprocess, and encode the data -------------------------------------------------------------
-    """
+    
+    # load, preprocess, and encode the data -------------------------------------------------------------
+    
     p = argparse.ArgumentParser(description="Data processing + MI scoring")
     p.add_argument('input_csv', nargs='?', default='data/Fraudulent_E-Commerce_Transaction_Data_2.csv',
                    help="Path to input CSV file")
@@ -121,9 +117,9 @@ def main():
 
     df_reduced.to_csv('data/reduced_fraud_data.csv', index=False)
 
-    """
-    balancing the dataset to a 1:1 ratio -----------------------------------------------------------------
-    """
+
+    # balancing the dataset to a 1:1 ratio -----------------------------------------------------------------
+    
     df = pd.read_csv('data/reduced_fraud_data.csv')
 
     df_pos = df[df['Is Fraudulent'] == 1]
