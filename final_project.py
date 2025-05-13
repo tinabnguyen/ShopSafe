@@ -13,6 +13,7 @@ from sklearn.neighbors import KNeighborsClassifier as knn
 import matplotlib.pyplot as plt
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 
 def plot_roc_curve(fpr, tpr, model_name):
@@ -214,6 +215,34 @@ def train_tuned_adaboost(X_train, y_train, X_test, y_test):
     best_ada = grid.best_estimator_
     evaluate_model(best_ada, X_test, y_test, "Tuned Adaboost")
 
+def train_random_forest(X_train, y_train, X_test, y_test):
+    model = RandomForestClassifier()
+    model.fit(X_train, y_train)
+    evaluate_model(model, X_test, y_test, "Random Forest")
+
+def train_tuned_random_forest(X_train, y_train, X_test, y_test):
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        "max_depth": [10, 20, 30, None],
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 5],
+        'max_features': ['sqrt', 'log2', None],
+        'bootstrap': [True, False]
+
+    }
+    grid = GridSearchCV(
+        RandomForestClassifier(),
+        param_grid,
+        cv = 5,
+        scoring = 'accuracy',
+        n_jobs = -1,
+        verbose = 1,
+        refit = True
+    )
+    grid.fit(X_train, y_train)
+    print("\nBest paramters found:", grid.best_params_)
+    best_rf = grid.best_estimator_
+    evaluate_model(best_rf, X_test, y_test, "Tuned Random Forest")
 
 
 def main():
@@ -241,6 +270,8 @@ def main():
     train_adaboost(X_train, y_train, X_test, y_test)
     train_tuned_adaboost(X_train, y_train, X_test, y_test)
 
+    train_random_forest(X_train, y_train, X_test, y_test)
+    train_tuned_random_forest(X_train, y_train, X_test, y_test)
 
 if __name__ == '__main__':
     main()
