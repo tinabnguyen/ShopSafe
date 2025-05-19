@@ -1,0 +1,5 @@
+ShopSafe is a machine learning project that explores different types of data preprocessing, as well as training different classification models to be able to classify whether an E-Commerce transaction is fraudulent or not.
+-
+* We used a Kaggle dataset by Shriyash Jagtap titled "Fraudulent E-Commerce Transactions". We preprocessed the data by using a mixture of one-hot encoding categorical features and scaling of numerical features. Additionally, we used undersampling to create a balanced dataset to then be able to create efficient training and test sets.
+* We ran the same dataset through 5 different models: Logistic Regression, K-Nearest Neighbors, Decision Tree, Neural Network, and Gradient Boosting. We ran each model on the default sci-kit parameters to see how the base performance was. Then, we retrained the models on their best hyperparameters. To find the hyperparameters, we performed GridSearchCV() with a focus on scoring on ROC_AUC score, as well as doing 5-fold cross-validation.
+* After the retraining, we compared all of the results of each model by analyzing their confusion matrices and ROC curves.
